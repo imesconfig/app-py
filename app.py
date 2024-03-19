@@ -1,8 +1,10 @@
-import pyodbc, time
-from flask import Flask, render_template, request, redirect, url_for, session, jsonify, make_response
+import pyodbc
+from tornado import web, ioloop
+from tornado.wsgi import WSGIContainer
+from flask import Flask, render_template, request, redirect, session, jsonify, make_response
 
 app = Flask(__name__)
-app.secret_key = 'Configuraciones-AppCambioSKU'  # Asegúrate de cambiar esto por una clave secreta segura en un entorno real
+app.secret_key = 'Configuraciones-AppCambioSKU'
 
 # Conexión a la base de datos SQL Server
 server = 'pxe\\SQLEXPRESS'
@@ -354,5 +356,10 @@ def export_to_excel():
     
     return render_template('export.html')
 
+
 if __name__ == '__main__':
-    app.run(host='10.24.1.1', port=5000, debug=True)
+    http_server = web.Application([
+        (r"/", WSGIContainer(app)),
+    ])
+    http_server.listen(5000)
+    ioloop.IOLoop.current().start()
