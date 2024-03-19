@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>Ingram Micro - App registradora</title>
+<link rel="icon" href="{{ url_for('static', filename='imagenes/favicon.ico') }}">
+<link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='bootstrap/css/bootstrap.min.css') }}">
+</head>
+<body>
+<nav class="navbar navbar-default">
+  <div class="container">
+    <div class="navbar-header">
+      <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1" aria-expanded="false"> <span class="sr-only">Toggle navigation</span> <span class="icon-bar"></span> <span class="icon-bar"></span> <span class="icon-bar"></span> </button>
+      <a class="navbar-brand" href="../">App registradora</a> </div>
+    <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+      <ul class="nav navbar-nav">
+        <li><a href="../">Ordenes <span class="sr-only">(current)</span></a></li>
+        <li><a href="/box">Box</a></li>
+        <li><a href="../unit">Unidades</a></li>
+        <li><a href="../buscar">Buscar orden</a></li>
+        <li><a href="../buscarunit">Buscar unidad</a></li>
+        <li><a href="../export">Export</a></li>
+        <li><a href="http://10.24.13.110/revmonitores">Rev Monitores</a></li>
+      </ul>
+    </div>
+  </div>
+</nav>
+<div class="container">
+  <div class="row">
+    <div class="col-md-12">
+        <h1>Redireccionando en 3 segundos...</h1>
+    
+        <script>
+            // Función para redireccionar después de 3 segundos
+            setTimeout(function() {
+                window.location.href = '/unit';  // Reemplaza '/tu-ruta-de-destino' con la URL a la que quieres redirigir
+            }, 5000);  // 3000 milisegundos = 3 segundos
+        </script>
+      Ya EXISTE la ETIQUETA que intenta registrar    </div>
+      <audio id="audio" src="../static/sonido.mp3" preload="auto"></audio>
+      <script>
+        window.onload = function() {
+          var audio = document.getElementById("audio");
+          audio.play();
+        };
+      </script>
+  </div>
+  <div class="row">
+    <div class="col-md-6">
+    	<div class="panel-body">

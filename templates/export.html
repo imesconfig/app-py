@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title>Ingram Micro - App registradora</title>
+    <link rel="icon" href="{{ url_for('static', filename='imagenes/favicon.ico') }}">
+    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='bootstrap/css/bootstrap.min.css') }}">
+</head>
+<body>
+    <nav class="navbar navbar-default">
+        <div class="container">
+            <div class="navbar-header">
+                <a class="navbar-brand" href="/">App registradora</a>
+            </div>
+            <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+                <ul class="nav navbar-nav">
+                    <li><a href="/">Ordenes</a></li>
+                    <li><a href="/box">Box</a></li>
+                    <li><a href="/unit">Unidades</a></li>
+                    <li><a href="/buscar">Buscar orden</a></li>
+                    <li><a href="/buscarunit">Buscar unidad</a></li>
+                    <li class="active"><a href="/export">Export</a></li>
+                    <li><a href="http://10.24.13.110/revmonitores">Rev Monitores</a></li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <div class="container">
+        <h2>Exportar datos a Excel</h2>
+        <form action="/export" method="post">
+            <div class="col-md-6">
+                <div class="form-group">
+                    <input type="text" name="ordre" autofocus placeholder="Ingrese orden a exportar" class="form-control" required/>
+                </div>
+                <br>
+                <div class="btn-group pull-left">
+                    <button id="export_data" name='export_data' value="Export to excel" class="btn btn-primary">EXPORTAR A EXCEL</button>
+                </div>
+            </div>
+        </form>
+    </div>
+    <br>
+    <div class="panel-footer">
+        <div class="container">
+            <p>Departamento de Configuraciones - <a href="https://es-new.ingrammicro.com/" target="_blank">Ingram Micro ES</a> - WH Constanti</p>
+        </div>
+    </div>
+</body>
+</html>

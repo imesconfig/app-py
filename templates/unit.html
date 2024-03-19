@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+    <title>Ingram Micro - App registradora</title>
+    <link rel="icon" href="{{ url_for('static', filename='imagenes/favicon.ico') }}">
+    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='bootstrap/css/bootstrap.min.css') }}">
+</head>
+<body>
+<nav class="navbar navbar-default">
+  <div class="container">
+    <!-- Brand and toggle get grouped for better mobile display -->
+    <div class="navbar-header">
+      <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1" aria-expanded="false"> <span class="sr-only">Toggle navigation</span> <span class="icon-bar"></span> <span class="icon-bar"></span> <span class="icon-bar"></span> </button>
+      <a class="navbar-brand" href="../">App registradora</a> </div>
+
+    <!-- Collect the nav links, forms, and other content for toggling -->
+    <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+      <ul class="nav navbar-nav">
+        <li ><a href="/">Ordenes <span class="sr-only">(current)</span></a></li>
+        <li ><a href="/box">Box <span class="sr-only"></span></a></li>
+        <li class="active"><a href="/unit">Unidades <span class="sr-only"></span></a></li>
+        <li ><a href="/buscar">Buscar orden <span class="sr-only"></span></a></li>
+        <li ><a href="/buscarunit">Buscar unidad <span class="sr-only"></span></a></li>
+        <li ><a href="/export">Export <span class="sr-only"></span></a></li>
+        <li ><a href="http://10.24.13.110/revmonitores">Rev Monitores <span class="sr-only"></span></a></li>
+      </ul>
+    </div>
+    <!-- /.navbar-collapse -->
+  </div>
+  <!-- /.container-fluid -->
+</nav>
+<div class="container">
+  <div class="row">
+    <div class="col-md-12">
+      <h1>Registro de unidad</h1>
+    </div>
+  </div>
+  <div class="row">
+    <div class="col-md-6">
+      <form action="/unit" method="post">
+        <div class="form-group">
+          <label for="name1">Número de orden: {{ ord1 }}</label>
+        </div>
+        <div class="form-group">
+          <label for="name1">Número de cambio SKU: {{ csku }}</label>
+        </div>
+        <div class="form-group">
+          <label for="name1">Número de box/palet: {{ boxnum1 }}</label>
+        </div>
+        <div class="form-group">
+          <label for="name1">EAN: {{ ean }}</label>
+        </div>
+        <div class="form-group">
+          <label for="name1">Serie: {{ label }}</label>
+        </div>
+        <div class="form-group">
+          <label for="name1">S/N</label>
+          <input type="text" name="serial" autofocus placeholder="Ingrese serial" class="form-control" required/>
+        </div>
+        <div class="form-group">
+          <input type="submit" name="submit_registro1" value="REGISTRA S/N" class="btn btn-primary"/>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>
+<div class="container">
+  <div class="row">
+    <div class="table-responsive">
+      <table id="" class="table table-striped table-bordered">
+        <tr>
+          <th>Número de orden</th>
+          <th>Cambio SKU</th>
+          <th>Número de unidades</th>
+          <th>Número de caja</th>
+          <th>Unidades por caja</th>
+          <th>S/N</th>
+          <th>Etiqueta</th>
+        </tr>
+        {% for record in unit_records %}
+        <tr>
+          <td>{{ record['ordre'] }}</td>
+          <td>{{ record['csku'] }}</td>
+          <td>{{ record['total_units'] }}</td>
+          <td>{{ record['box'] }}</td>
+          <td>{{ record['box_units'] }}</td>
+          <td>{{ record['serial'] }}</td>
+          <td>{{ record['sn'] }}</td>
+        </tr>
+        {% endfor %}
+      </table>
+    </div>
+  </div>
+</div>
+<div class="container">
+  <div class="row">
+    <div class="col-md-6">
+      <form action="/unit" method="post">
+        <div class="form-group">
+          <label for="name1">Cambio de serie</label>
+          <input type="text" name="relabel" placeholder="Ingrese serie" maxlength="5" minlength="5" class="form-control"/>
+        </div>
+        <div class="form-group">
+          <input type="submit" name="submit_registro2" value="Cambiar Serie" class="btn btn-primary"/>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>
+<div class="panel-footer">
+  <div class="container">
+    <p>Departamento de Configuraciones - <a href="https://es-new.ingrammicro.com/" target="_blank">Ingram Micro ES</a> - WH Constanti</p>
+  </div>
+</div>
+</body>
+</html>

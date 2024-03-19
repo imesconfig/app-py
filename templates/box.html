@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>Ingram Micro - App registradora</title>
+<link rel="icon" href="{{ url_for('static', filename='imagenes/favicon.ico') }}">
+<link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='bootstrap/css/bootstrap.min.css') }}">
+</head>
+<body>
+<nav class="navbar navbar-default">
+  <div class="container">
+    <div class="navbar-header">
+      <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1" aria-expanded="false"> <span class="sr-only">Toggle navigation</span> <span class="icon-bar"></span> <span class="icon-bar"></span> <span class="icon-bar"></span> </button>
+      <a class="navbar-brand" href="../">App registradora</a> </div>
+    <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+      <ul class="nav navbar-nav">
+        <li><a href="../">Ordenes <span class="sr-only">(current)</span></a></li>
+        <li class="active"><a href="/box">Box</a></li>
+        <li><a href="../unit">Unidades</a></li>
+        <li><a href="../buscar">Buscar orden</a></li>
+        <li><a href="../buscarunit">Buscar unidad</a></li>
+        <li><a href="../export">Export</a></li>
+        <li><a href="http://10.24.13.110/revmonitores">Rev Monitores</a></li>
+      </ul>
+    </div>
+  </div>
+</nav>
+<div class="container">
+  <div class="row">
+    <div class="col-md-12">
+      <h1>Registro de box</h1>
+    </div>
+  </div>
+  <div class="row">
+    <div class="col-md-6">
+      <form action="{{ url_for('box') }}" method="post">
+        <div class="form-group">
+          <label for="ord1">Número de orden: {{ ord1 }}</label>
+        </div>
+        <div class="form-group">
+          <label for="label">Número de etiqueta: {{ label }}</label>
+        </div>
+        <div class="form-group">
+          <label for="boxnum">Número de box/palet</label>
+          <input type="text" id="boxnum" name="boxnum" autofocus placeholder="Ingrese número de box" class="form-control" required/>
+        </div>
+        <div class="form-group">
+          <label for="unit">Unidades por box/palet</label>
+          <input type="text" id= "unit" name="unit" placeholder="Ingrese unidades por box" class="form-control" required/>
+        </div>
+        <div class="form-group">
+          <input type="submit" name="submit_registro1" value="REGISTRA LA BOX/PALET" class="btn btn-primary"/>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>
+<div class="container">
+  <div class="row">
+    <div class="table-responsive">
+      <table id="tabla" class="col-md-6">
+        <table id="" class="table table-striped table-bordered">
+          <tr>
+            <th>ID</th>
+            <th>Número de box</th>
+            <th>Unidades</th>
+          </tr>
+          {% for record in box_records %}
+          <tr>
+            <td>{{ record.id }}</td>
+            <td>{{ record.boxnum }}</td>
+            <td>{{ record.unit }}</td>
+          </tr>
+          {% endfor %}
+        </table>
+        <br>
+      </div>
+    </div>
+  </div>
+</div>
+<div class="panel-footer">
+  <div class="container">
+    <p>Departamento de Configuraciones - <a href="https://es-new.ingrammicro.com/" target="_blank">Ingram Micro ES</a> - WH Constanti</p>
+  </div>
+</div>
+</body>
+</html>

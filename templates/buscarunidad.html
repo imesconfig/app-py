@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>Ingram Micro - App registradora</title>
+<link rel="icon" href="{{ url_for('static', filename='imagenes/favicon.ico') }}">
+<link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='bootstrap/css/bootstrap.min.css') }}">
+</head>
+<body>
+<nav class="navbar navbar-default">
+  <div class="container">
+    <div class="navbar-header">
+      <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1" aria-expanded="false"> <span class="sr-only">Toggle navigation</span> <span class="icon-bar"></span> <span class="icon-bar"></span> <span class="icon-bar"></span> </button>
+      <a class="navbar-brand" href="../">App registradora</a> </div>
+    <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+      <ul class="nav navbar-nav">
+        <li><a href="../">Ordenes <span class="sr-only">(current)</span></a></li>
+        <li><a href="/box">Box</a></li>
+        <li><a href="../unit">Unidades</a></li>
+        <li><a href="../buscar">Buscar orden</a></li>
+        <li class="active"><a href="../buscarunit">Buscar unidad</a></li>
+        <li><a href="../export">Export</a></li>
+        <li><a href="http://10.24.13.110/revmonitores">Rev Monitores</a></li>
+      </ul>
+    </div>
+  </div>
+</nav>
+        <div class="container">
+            <h2>Buscar en la base de datos</h2>
+            <div class="row">
+                <div class="col-md-12">
+                    <form action="/buscarunit" method="post">
+                        <div class="form-group">
+                            <label value="name1">Serial o etiqueta:</label>
+                            <input type="text" name="serial" autofocus placeholder="Ingrese serial/etiqueta del producto" class="form-control" required/>
+                        </div>
+                        <div class="form-group">
+                            <input type="submit" name="submit_registro1" value="BUSCAR REGISTROS" class="btn btn-primary"/>
+                        </div>
+                    </form>
+                </div>
+            </div>
+            <div class="table-responsive">
+                <table id="tabla" class="col-md-6">
+                    <table id="" class="table table-striped table-bordered">
+                        <tr>
+                            <th>Orden</th>
+                            <th>Box</th>
+                            <th>Unidades de box</th>
+                            <th>Serial</th>
+                            <th>Etiqueta</th>
+                            <th>Editar</th>
+                        </tr>
+                        {% for row in data %}
+                        <tr>
+                            <td>{{ row.ordre }}</td>
+                            <td>{{ row.box }}</td>
+                            <td>{{ row.box_units }}</td>
+                            <td>{{ row.serial }}</td>
+                            <td>{{ row.sn }}</td>
+                            <td>
+                                <button class="btn btn-primary btn-sm edit-button" data-record-id="{{ row.id }}">Editar</button>
+                                <form class="edit-form" style="display: none;">
+                                    <input type="hidden" name="edit-id" class="edit-id" value="{{ row.id }}">                        
+                                    <input type="text" name="newserial" class="form-control edit-serial" value="{{ row.serial }}">
+                                    <input type="text" name="newsn" class="form-control edit-sn" value="{{ row.sn }}">
+                                    <button type="button" class="btn btn-success btn-sm save-button">Guardar</button>                    
+                                </form>
+                            </td>
+                        </tr>
+                        {% endfor %}
+                    </table>
+                </table>
+            </div>
+        </div>
+        <br>
+        <div class="panel-footer">
+            <div class="container">
+                <p>Departamento de Configuraciones - <a href="https://es-new.ingrammicro.com/" target="_blank">Ingram Micro ES</a> - WH Constanti</p>
+            </div>
+        </div>
+        <script>
+            document.addEventListener('DOMContentLoaded', function () {
+                const editButtons = document.querySelectorAll('.edit-button');
+                const editForms = document.querySelectorAll('.edit-form');
+                const saveButtons = document.querySelectorAll('.save-button');
+                const editSerialInputs = document.querySelectorAll('.edit-serial');
+                const editSnInputs = document.querySelectorAll('.edit-sn');
+
+                editButtons.forEach((button, index) => {
+                    button.addEventListener('click', function () {
+                        editForms[index].style.display = 'block';
+                        button.style.display = 'none';
+                    });
+                });
+
+                saveButtons.forEach((button, index) => {
+                    button.addEventListener('click', function () {
+                        const form = editForms[index];
+                        const formData = new FormData(form);
+
+                        const id = formData.get('edit-id');
+                        formData.set('id', id);
+
+                        $.ajax({
+                            type: 'POST',
+                            url: '/actualizar',
+                            data: formData,
+                            processData: false,
+                            contentType: false,
+                            dataType: 'json',
+                            success: function (response) {
+                                if (response.success) {
+                                    // Actualizar los valores en la página HTML sin recargarla
+                                    const newSerial = response.new_serial;
+                                    const newSn = response.new_sn;
+                                    location.reload();
+
+                                    const row = editForms[index].closest('tr');
+                                    row.querySelector('.edit-serial').value = newSerial;
+                                    row.querySelector('.edit-sn').value = newSn;
+
+                                    // Mensaje de éxito
+                                    console.log(response.message);
+                                } else {
+                                    // Mensaje de error
+                                    console.log(response.message);
+                                }
+                            },
+                            error: function (error) {
+                                console.log('Error:', error);
+                            }
+                        });
+
+                        form.style.display = 'none';
+                        editButtons[index].style.display = 'block';
+                    });
+                });
+            });
+        </script>
+    </body>
+</html>

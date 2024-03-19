@@ -1,0 +1,147 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title>Ingram Micro - App registradora</title>
+    <link rel="icon" href="{{ url_for('static', filename='imagenes/favicon.ico') }}">
+    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='bootstrap/css/bootstrap.min.css') }}">
+</head>
+<body>
+    <nav class="navbar navbar-default">
+        <div class="container">
+            <div class="navbar-header">
+                <a class="navbar-brand" href="/">App registradora</a>
+            </div>
+            <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+                <ul class="nav navbar-nav">
+                    <li class="active"><a href="/">Ordenes</a></li>
+                    <li><a href="/box">Box</a></li>
+                    <li><a href="/unit">Unidades</a></li>
+                    <li><a href="/buscar">Buscar orden</a></li>
+                    <li><a href="/buscarunit">Buscar unidad</a></li>
+                    <li><a href="/export">Export</a></li>
+                    <li><a href="http://10.24.13.110/revmonitores">Rev Monitores</a></li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+    <body>
+        <div class="container">
+            <h1>Registro de orden</h1>
+            <form action="{{ url_for('index') }}" method="post">
+              <div class="row">
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label for="ordre">Número de orden:</label>
+                            <input type="text" id="ordre" name="ordre" autofocus placeholder="Ingrese orden" class="form-control" required/>
+                        </div>
+                        <div class="form-group">
+                            <label for="csku">Número de cambio SKU:</label>
+                            <input type="text" id="csku" name="csku" autofocus placeholder="Ingrese cambio SKU" class="form-control" required/>
+                        </div>
+                        <div class="form-group">
+                            <label for="unit">Número de unidades totales:</label>
+                            <input type="number" id="unit" name="unit" placeholder="Ingrese unidades" class="form-control" required/>
+                        </div>
+                        <div class="form-group">
+                            <label for="datei">Fecha inicio:</label>
+                            <input type="text" id="datei" name="datei" class="form-control" readonly required/>
+                        </div>
+                        
+                        <script>
+                            var today = new Date();
+                            var day = String(today.getDate()).padStart(2, '0');
+                            var month = String(today.getMonth() + 1).padStart(2, '0'); // Enero es 0!
+                            var year = today.getFullYear();
+                        
+                            var fecha = day + '-' + month + '-' + year;
+                            document.getElementById("datei").value = fecha;
+                        </script>
+                        
+                        <div class="form-group">
+                            <label for="formlabel">Formato etiqueta:</label>
+                            <input type="text" id="formlabel" name="formlabel" placeholder="Ingrese formato etiqueta" minlength="10" maxlength="10" class="form-control" required/>
+                        </div>
+                        <div class="form-group">
+                            <label for="label">Número etiqueta:</label>
+                            <input type="text" id="label" name="label" placeholder="Ingrese etiqueta" class="form-control" value="00001" minlength="5" maxlength="5" required/>
+                        </div>
+                        <div class="form-group">
+                            <label for="ean">EAN:</label>
+                            <input type="text" id="ean" name="ean" placeholder="Ingrese EAN" class="form-control" required/>
+                        </div>
+                        <div class="form-group">
+                            <label for="mascara1">Máscara 1:</label>
+                            <input type="text" id="mascara1" name="mascara1" placeholder="Ingrese máscara" class="form-control" required/>
+                        </div>
+                        <div class="form-group">
+                            <label for="mascara2">Máscara 2:</label>
+                            <input type="text" id="mascara2" name="mascara2" placeholder="Ingrese máscara" class="form-control" required/>
+                        </div>
+                        <div class="form-group">
+                            <input type="submit" name="submit_registro" value="REGISTRA LA ORDEN" class="btn btn-primary"/>
+                        </div>
+                    </div>
+                </div>
+            </form>
+    
+            <hr>
+    
+            <h2>Últimas 10 órdenes:</h2>
+            <table class="table table-striped table-bordered">
+                <thead>
+                    <tr>
+                        <th>Número de orden</th>
+                        <th>Cambio SKU</th>
+                        <th>Número de unidades</th>
+                        <th>Fecha Inicio</th>
+                        <th>Formato etiqueta</th>
+                        <th>Enviar Mail</th> <!-- Nueva columna -->
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for orden in ordenes %}
+                    <tr>
+                        <td>{{ orden.ordre }}</td>
+                        <td>{{ orden.csku }}</td>
+                        <td>{{ orden.unit }}</td>
+                        <td>{{ orden.datei }}</td>
+                        <td>{{ orden.formlabel }}</td>
+                        <td> <!-- Nueva celda con el botón de Enviar Mail -->
+                            <form action="{{ url_for('send_email') }}" method="post">
+                                <input type="hidden" name="ordre" value="{{ orden.ordre }}">
+                                <button type="submit" class="btn btn-primary">Enviar Mail</button>
+                            </form>
+                        </td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+
+    
+            <hr>
+            <h2>Resumen de registros:</h2>
+
+        <div class="container">
+        <div class="row">
+            <table class="table table-striped table-bordered">
+                <tr>
+                    <th>Número de registros en bdd</th>
+                    <th>Número de ordenes registradas</th>
+                    <th>Número de box registradas</th>
+                </tr>
+                <tr>
+                    <td>{{ total_registros1 }}</td>
+                    <td>{{ total_registros }}</td>
+                    <td>{{ total_registros2 }}</td>
+                </tr>
+            </table>
+        </div>
+    </div>
+    <div class="panel-footer">
+        <div class="container">
+            <p>Departamento de Configuraciones - <a href="https://es-new.ingrammicro.com/" target="_blank">Ingram Micro ES</a> - WH Constanti</p>
+        </div>
+    </div>
+</body>
+</html>
